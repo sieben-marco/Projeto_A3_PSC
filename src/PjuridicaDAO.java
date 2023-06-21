@@ -2,14 +2,14 @@ import java.sql.*;
 
 public class PjuridicaDAO {
 	Connection conexao;
-
+	
 	//Criando objeto para iniciar a conex�o com o banco de dados.
 	public PjuridicaDAO() {
 		this.conexao = new Conexao().criarConexao();
 	}
 	
 	// Listagem de Pessoa Jur�dica.
-	public void listarPjuridica(String tipo, int id, String nome) {
+	public void listarPjuridica(int id, String nome, String tipo) {
 		
 		try {
 			String query;
@@ -80,7 +80,7 @@ public class PjuridicaDAO {
 		}
 	}
     // M�todo para editar o Cliente.        
-    public void editarContato(int id, int campo, String valor) {
+    public void editarCliente(int id, int campo, String valor) {
     	
     	//Escolher a op��o que quer editar.
     	 String nomecampo = switch (campo) {

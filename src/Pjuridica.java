@@ -1,8 +1,9 @@
 public class Pjuridica extends Cliente {
 	
 	private String cnpj;
-	
-	public Pjuridica(String cnpj ) {
+
+	public Pjuridica(String nome, String senha, String cnpj ) {
+		super(nome, senha);
 		this.cnpj = cnpj;
 	}
 
@@ -10,8 +11,8 @@ public class Pjuridica extends Cliente {
 		return cnpj;
 	}
 
-	public void setCnpj(String cnpj) {
-		this.cnpj = cnpj;
+	public void setNome(String nome) {
+		this.setNome(nome);	
 	}
 	
 }
