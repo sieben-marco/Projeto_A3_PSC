@@ -31,7 +31,7 @@ public class Main {
             switch (op) {
                 case 1:
                     tipo = "saque";
-                    System.out.println("\n # INFORMAÇÕES PARA O SAQUE:");
+                    System.out.println("\n # INFORMAÇÕES PARA O SAQUE:\n");
                     System.out.print("Digite o valor que deseja sacar: ");
                     valor = input.nextDouble();
 
@@ -41,12 +41,19 @@ public class Main {
 
                 case 2:
                     tipo = "deposito";
-                    System.out.println("\n # INFORMAÇÕES PARA O DEPÓSITO:");
-                    System.out.print("Digite o valor que deseja sacar: ");
+                    System.out.println("\n # INFORMAÇÕES PARA O DEPÓSITO:\n");
+                    System.out.print("Digite o valor que deseja depositar: ");
                     valor = input.nextDouble();
 
                     Transacao transacao2 = new Transacao(tipo, valor, data);
                     acoes.registrar(transacao2);
+                    break;
+
+                case 3:
+                    //System.out.print("Digite o id da transacao: ");
+                    //id = input.nextInt();
+
+                    acoes.consultar();
                     break;
             }
 

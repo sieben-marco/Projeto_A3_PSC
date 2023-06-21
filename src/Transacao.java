@@ -6,9 +6,6 @@ public class Transacao {
     private double valor;
     private LocalDate data;
 
-    public Transacao() {
-    }
-
     public Transacao(String tipo, double valor, LocalDate data) {
         this.tipo = tipo;
         this.valor = valor;
