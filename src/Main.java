@@ -63,6 +63,7 @@ public class Main {
                                     System.out.println("2 - Fazer Saque");
                                     System.out.println("3 - Mostrar Extrato");
                                     System.out.println("4 - Mostrar Saldo");
+                                    System.out.println("5 - Excluir Conta");
                                     System.out.println("0 - Voltar para Tela inicial");
                                     System.out.print("Digite a opção desejada: ");
 
@@ -75,8 +76,12 @@ public class Main {
                                             valor = Double.parseDouble(reader.readLine());
                                             LocalDate data1 = LocalDate.now();
 
-                                            Transacao deposito = new Transacao(tipoTransacao, valor, data1);
+                                            //Pfisica pFisica = new Pfisica()
 
+                                            //Conta contaPF = new Conta(p);
+                                            acoesConta.depositar(valor, 1);
+
+                                            Transacao deposito = new Transacao(tipoTransacao, valor, data1);
                                             acoesTrans.registrar(deposito);
 
                                             break;
@@ -86,14 +91,19 @@ public class Main {
                                             valor = Double.parseDouble(reader.readLine());
                                             LocalDate data2 = LocalDate.now();
 
-                                            Transacao saque = new Transacao(tipoTransacao, valor, data2);
+                                            acoesConta.sacar(valor, 1);
 
+                                            Transacao saque = new Transacao(tipoTransacao, valor, data2);
                                             acoesTrans.registrar(saque);
 
                                             break;
 
                                         case 3:
                                             acoesTrans.consultar();
+                                            break;
+
+                                        case 4:
+                                            acoesConta.mostrarSaldo(1);
                                             break;
 
                                         case 0:

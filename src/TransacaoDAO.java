@@ -43,29 +43,29 @@ public class TransacaoDAO {
             String query;
             PreparedStatement statement = null;
 
-            query = "select * from transacao";
+            query = "select idTransacao, valor, tipoTransacao, data, C.nome, idConta from transacao as T inner join cliente as C on T.idCliente = C.idCliente where T.idCliente = 1";
             statement = conexao.prepareStatement(query);
             //statement.setInt(1, id);
 
             ResultSet rs = statement.executeQuery();
 
-            System.out.println("\n----------------------------------------------------------------------------");
-            System.out.format("ID\t\tVALOR\t\tTRANSAÇÃO\t\tDATA\t\t\tID CLIENTE\t\tID CONTA\n");
-            System.out.println("----------------------------------------------------------------------------");
+            System.out.println("\n--------------------------------------------------------------------------------");
+            System.out.format("ID\t\tVALOR\t\tTRANSAÇÃO\t\tDATA\t\t\tNOME\t\t\t\tID CONTA\n");
+            System.out.println("--------------------------------------------------------------------------------");
 
             while (rs.next()) {
                 int id = rs.getInt("idTransacao");
                 double valor = rs.getDouble("valor");
                 String tipo = rs.getString("tipoTransacao");
                 LocalDate data = rs.getDate("data").toLocalDate();
-                int idCliente = rs.getInt("idCliente");
+                String nome = rs.getString("nome");
                 int idConta = rs.getInt("idConta");
 
 
                 if (tipo.equals("deposito")) {
-                    System.out.format("%d\t\t%.2f\t\t%-5s\t\t%-10s\t\t%d\t\t\t\t%d\n", id, valor, tipo, data, idCliente, idConta);
+                    System.out.format("%d\t\t%.2f\t\t%-5s\t\t%-10s\t\t%-5s\t\t\t\t%d\n", id, valor, tipo, data, nome, idConta);
                 } else {
-                    System.out.format("%d\t\t%.2f\t\t%-5s\t\t\t%-10s\t\t%d\t\t\t\t%d\n", id, valor, tipo, data, idCliente, idConta);
+                    System.out.format("%d\t\t%.2f\t\t%-5s\t\t\t%-10s\t\t%-5s\t\t\t\t%d\n", id, valor, tipo, data, nome, idConta);
                 }
             }
 
