@@ -55,6 +55,56 @@ public class Main {
                             System.out.println(acesso);
                             System.out.println();
 
+                            if (acesso) {
+                                do {
+                                    System.out.println("TELA INICIAL");
+                                    System.out.println("1 - Fazer Depósito");
+                                    System.out.println("2 - Fazer Saque");
+                                    System.out.println("3 - Mostrar Extrato");
+                                    System.out.println("4 - Mostrar Saldo");
+                                    System.out.println("0 - Voltar para Tela inicial");
+                                    System.out.print("Digite a opção desejada: ");
+
+                                    op2 = Integer.parseInt(reader.readLine());
+
+                                    switch (op2) {
+                                        case 1:
+                                            tipoTransacao = "deposito";
+                                            System.out.print("Digite o valor a ser depositado: ");
+                                            valor = Double.parseDouble(reader.readLine());
+                                            LocalDate data1 = LocalDate.now();
+
+                                            Transacao deposito = new Transacao(tipoTransacao, valor, data1);
+
+                                            acoesTrans.registrar(deposito);
+
+                                            break;
+                                        case 2:
+                                            tipoTransacao = "saque";
+                                            System.out.print("Digite o valor a ser sacado: ");
+                                            valor = Double.parseDouble(reader.readLine());
+                                            LocalDate data2 = LocalDate.now();
+
+                                            Transacao saque = new Transacao(tipoTransacao, valor, data2);
+
+                                            acoesTrans.registrar(saque);
+
+                                            break;
+
+                                        case 3:
+                                            acoesTrans.consultar();
+                                            break;
+
+                                        case 0:
+                                            System.out.println("\nVocê está voltando para tela inicial...\n");
+                                            break;
+
+                                        default:
+                                            System.out.println("\nOpção não permitida. Escolha outra!\n");
+                                    }
+                                } while (op2 != 0);
+                            }
+
                             break;
                         case 2:
                             System.out.print("Digite seu CNPJ: ");
