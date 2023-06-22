@@ -6,9 +6,6 @@ public class Cliente {
 	private String senha;
 	private boolean autenticado = false;
 	
-	public Cliente() {
-	}
-	
 	//Contrutor com os "this".
 	public Cliente(String nome, String senha) {
 		this.nome = nome;

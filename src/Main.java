@@ -15,6 +15,7 @@ public class Main {
         PfisicaDAO acoesPF = new PfisicaDAO();
         PjuridicaDAO acoesPJ = new PjuridicaDAO();
 
+        ContaDAO acoesConta = new ContaDAO();
         TransacaoDAO acoesTrans = new TransacaoDAO();
 
         int op1, op2, id;
@@ -36,9 +37,9 @@ public class Main {
                 case 1:
                     // Realizando seu Login.
                     System.out.println("\nRealizando seu Login...");
-                    System.out.println("\n1 - Você é Pessoa Física?");
-                    System.out.println("\n2 - Você é Pessoa Jurídica?");
-                    System.out.print("\nDigite sua opção: ");
+                    System.out.println("1 - Você é Pessoa Física?");
+                    System.out.println("2 - Você é Pessoa Jurídica?");
+                    System.out.print("Digite sua opção: ");
 
                     op1 = teclado.nextInt();
 
@@ -127,9 +128,9 @@ public class Main {
                 case 2:
                     // Realização do Cadastro.
                     System.out.println("\nRealizando seu Cadastro...");
-                    System.out.println("\n1 - Você é Pessoa Física?");
-                    System.out.println("\n2 - Você é Pessoa Jurídica?");
-                    System.out.print("\n Digite sua opção: ");
+                    System.out.println("1 - Você é Pessoa Física?");
+                    System.out.println("2 - Você é Pessoa Jurídica?");
+                    System.out.print("Digite sua opção: ");
 
                     op1 = teclado.nextInt();
 
@@ -145,9 +146,10 @@ public class Main {
                             senha = reader.readLine();
 
                             Pfisica pFisica = new Pfisica(nome, senha, documento);
-
-
                             acoesPF.realizarCadastro(pFisica, tipoCliente);
+
+                            Conta conta1 = new Conta(pFisica);
+                            acoesConta.abrirConta(conta1);
 
                             break;
 

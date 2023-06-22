@@ -7,6 +7,11 @@ public class Pfisica extends Cliente {
 		this.cpf = cpf;
 	}
 
+	@Override
+	public int getId() {
+		return super.getId();
+	}
+
 	public String getCpf() {
 		return cpf;
 	}
