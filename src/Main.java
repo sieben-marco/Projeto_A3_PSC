@@ -1,12 +1,13 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         // Leitura do teclado para saber qual escolha o cliente esta fazendo.
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Scanner teclado = new Scanner(System.in);
@@ -14,8 +15,11 @@ public class Main {
         PfisicaDAO acoesPF = new PfisicaDAO();
         PjuridicaDAO acoesPJ = new PjuridicaDAO();
 
-        int op, id;
-        String nome, documento, tipoCliente, senha;
+        TransacaoDAO acoesTrans = new TransacaoDAO();
+
+        int op1, op2, id;
+        double valor;
+        String nome, documento, tipoCliente, senha, tipoTransacao;
         // Tela inicial para o cliente escolher as op��es do banco.
         do {
             System.out.println("Olá, bem vindo ao nosso banco");
@@ -24,24 +28,22 @@ public class Main {
             System.out.println("0 - Sair do Banco");
             System.out.print("Digite a opção desejada: ");
 
-            op = Integer.parseInt(reader.readLine());
+            op1 = Integer.parseInt(reader.readLine());
 
             //Qual das op��es acima foi escolhida.
-            switch (op) {
+            switch (op1) {
 
                 case 1:
                     // Realizando seu Login.
                     System.out.println("\nRealizando seu Login...");
-
-                    System.out.println("\nRealizando o seu Login...");
                     System.out.println("\n1 - Você é Pessoa Física?");
                     System.out.println("\n2 - Você é Pessoa Jurídica?");
                     System.out.print("\nDigite sua opção: ");
 
-                    op = teclado.nextInt();
+                    op1 = teclado.nextInt();
 
                     boolean acesso = false;
-                    switch (op) {
+                    switch (op1) {
                         case 1:
                             System.out.print("Digite seu CPF: ");
                             documento = reader.readLine();
@@ -74,14 +76,14 @@ public class Main {
 
                 case 2:
                     // Realização do Cadastro.
-                    System.out.println("\nRealizando o seu Cadastro");
+                    System.out.println("\nRealizando seu Cadastro...");
                     System.out.println("\n1 - Você é Pessoa Física?");
                     System.out.println("\n2 - Você é Pessoa Jurídica?");
                     System.out.print("\n Digite sua opção: ");
 
-                    op = teclado.nextInt();
+                    op1 = teclado.nextInt();
 
-                    switch (op) {
+                    switch (op1) {
 
                         case 1:
                             System.out.print("\nDigite seu Nome: ");
@@ -116,11 +118,15 @@ public class Main {
                             break;
 
                     }
+                case 0:
+                    System.out.println("\nVocê está sendo desconectado...\n");
+                    break;
+
+                default:
+                    System.out.println("\nOpção não permitida. Escolha outra!\n");
             }
 
-        } while(op != 0);
+        } while(op1 != 0);
         teclado.close();
-
     }
-
 }

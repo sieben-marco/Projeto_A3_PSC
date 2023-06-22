@@ -13,17 +13,19 @@ public class TransacaoDAO {
     public boolean registrar(Transacao transacao) {
         try {
                 // prepara sql para execucao no banco de dados
-                String query = "insert into transacao(valor, tipoTransacao, data) values (?,?,?)";
+                String query = "insert into transacao(valor, tipoTransacao, data, idCliente, idConta) values (?,?,?,?,?)";
                 PreparedStatement statement = conexao.prepareStatement(query);
 
                 statement.setDouble(1, transacao.getValor());
                 statement.setString(2, transacao.getTipo());
                 statement.setDate(3, Date.valueOf(transacao.getData()));
+                statement.setInt(4, 1);
+                statement.setInt(5, 1);
 
                 statement.execute();
                 statement.close();
 
-                System.out.println("\nNova transação cadastrada!");
+                System.out.println("\nTransação cadastrada!\n");
                 return true;
 
         } catch (SQLException e) {
@@ -35,7 +37,7 @@ public class TransacaoDAO {
         return false;
     }
 
-    public void consultar(/*int id*/) {
+    public void consultar(/*int idCliente, int idConta*/) {
 
         try {
             String query;
@@ -47,22 +49,27 @@ public class TransacaoDAO {
 
             ResultSet rs = statement.executeQuery();
 
-            System.out.println("-------------------------------------------------");
-            System.out.format("ID\tVALOR\t\tTRANSAÇÃO\t\tDATA\n");
-            System.out.println("-------------------------------------------------");
+            System.out.println("\n----------------------------------------------------------------------------");
+            System.out.format("ID\t\tVALOR\t\tTRANSAÇÃO\t\tDATA\t\t\tID CLIENTE\t\tID CONTA\n");
+            System.out.println("----------------------------------------------------------------------------");
 
             while (rs.next()) {
                 int id = rs.getInt("idTransacao");
                 double valor = rs.getDouble("valor");
                 String tipo = rs.getString("tipoTransacao");
                 LocalDate data = rs.getDate("data").toLocalDate();
+                int idCliente = rs.getInt("idCliente");
+                int idConta = rs.getInt("idConta");
+
 
                 if (tipo.equals("deposito")) {
-                    System.out.format("%d\t%.2f\t\t%-5s\t\t%-10s\n", id, valor, tipo, data);
+                    System.out.format("%d\t\t%.2f\t\t%-5s\t\t%-10s\t\t%d\t\t\t\t%d\n", id, valor, tipo, data, idCliente, idConta);
                 } else {
-                    System.out.format("%d\t%.2f\t\t%-5s\t\t\t%-10s\n", id, valor, tipo, data);
+                    System.out.format("%d\t\t%.2f\t\t%-5s\t\t\t%-10s\t\t%d\t\t\t\t%d\n", id, valor, tipo, data, idCliente, idConta);
                 }
             }
+
+            System.out.println();
 
             rs.close();
             statement.close();
