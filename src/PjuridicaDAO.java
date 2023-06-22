@@ -54,6 +54,40 @@ public class PjuridicaDAO {
 				
 		}
 	}
+
+    public boolean realizarLogin(String documento, String senha) {
+
+        try {
+            String query;
+            PreparedStatement statement = null;
+
+            query = "SELECT documento, senha FROM cliente WHERE documento = ? and senha = ?";
+            statement = conexao.prepareStatement(query);
+
+            statement.setString(1, documento);
+            statement.setString(2, senha);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                String doc = rs.getString("documento");
+                String acesso = rs.getString("senha");
+
+                if (documento.equals(doc) && senha.equals(acesso)) {
+                    return true;
+                }
+            }
+
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Error Code = " + e.getErrorCode());
+            System.out.println("SQL state = " + e.getSQLState());
+            System.out.println("Message = " + e.getMessage());
+        }
+
+        return false;
+    }
 	
 	//M�todos para Cadastrar um novo Cliente.
 	public void realizarCadastro(Pjuridica pJuridica, String tipoCliente) {
