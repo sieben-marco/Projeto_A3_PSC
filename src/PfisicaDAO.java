@@ -30,10 +30,10 @@ public class PfisicaDAO {
                 int id1 = rs.getInt("idCliente");
                 String nome1 = rs.getNString("nome");
                 String documento = rs.getNString("documento");
-                String tipocliente = rs.getNString("tipoCliente");
+                String tipoCliente = rs.getNString("tipoCliente");
                 String status = rs.getNString("status");
 
-                System.out.format("%d\t\t\t%-10s\t%-10s\t\t%-5s\t\t%-10s\n\n", id1, nome1, documento, tipocliente, status);
+                System.out.format("%d\t\t\t%-10s\t%-10s\t\t%-5s\t\t%-10s\n\n", id1, nome1, documento, tipoCliente, status);
             }
             rs.close();
             stmt.close();

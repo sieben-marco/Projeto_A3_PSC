@@ -43,6 +43,9 @@ public class Main {
 
                     System.out.print("Digite seu CPF/CNPJ: ");
                     documento = reader.readLine();
+                    System.out.print("Digite sua senha: ");
+                    senha = reader.readLine();
+
                     int tamanhoDoc = documento.length();
 
                     if (tamanhoDoc <= 14) {
@@ -58,8 +61,7 @@ public class Main {
                         case 1:
                             //System.out.print("Digite seu CPF: ");
                             //documento = reader.readLine();
-                            System.out.print("Digite sua senha: ");
-                            senha = reader.readLine();
+
 
                             acesso = acoesPF.realizarLogin(documento, senha);
 
@@ -200,17 +202,146 @@ public class Main {
 
                             break;
                         case 2:
-                            System.out.print("Digite seu CNPJ: ");
-                            documento = reader.readLine();
-                            System.out.print("Digite sua senha: ");
-                            senha = reader.readLine();
+                            //System.out.print("Digite seu CNPJ: ");
+                            //documento = reader.readLine();
 
-                            acoesPJ.realizarLogin(documento, senha);
 
                             acesso = acoesPJ.realizarLogin(documento, senha);
+
                             System.out.println();
-                            System.out.println(acesso);
-                            System.out.println();
+
+                            if (acesso) {
+                                do {
+                                    id = acoesPJ.obterIdCliente(documento);
+
+                                    System.out.println("TELA INICIAL");
+
+                                    if (senha.equals("admin")) {
+                                        System.out.println("11 - Excluir Conta");
+                                    }
+
+                                    System.out.println("1 - Fazer Depósito");
+                                    System.out.println("2 - Fazer Saque");
+                                    System.out.println("3 - Mostrar Extrato");
+                                    System.out.println("4 - Mostrar Saldo");
+                                    System.out.println("5 - Consultar Recompensas");
+                                    System.out.println("6 - Encerrar Conta");
+                                    //System.out.println("7 - Excluir Conta");
+                                    System.out.println("0 - Voltar para Tela inicial");
+                                    System.out.print("Digite a opção desejada: ");
+
+                                    op2 = Integer.parseInt(reader.readLine());
+
+                                    switch (op2) {
+                                        case 1:
+                                            tipoTransacao = "deposito";
+                                            System.out.print("Digite o valor a ser depositado: ");
+                                            valor = Double.parseDouble(reader.readLine());
+                                            LocalDate data1 = LocalDate.now();
+
+                                            //Pjuridica pJuridica = new Pjuridica();
+
+                                            //Conta contaPJ = new Conta(p);
+                                            acoesConta.depositar(valor, id);
+
+                                            point += (valor * 0.1);
+
+                                            Transacao deposito = new Transacao(tipoTransacao, valor, data1);
+                                            acoesTrans.registrar(deposito, id);
+
+
+
+                                            break;
+                                        case 2:
+                                            tipoTransacao = "saque";
+                                            System.out.print("Digite o valor a ser sacado: ");
+                                            valor = Double.parseDouble(reader.readLine());
+                                            LocalDate data2 = LocalDate.now();
+
+                                            acoesConta.sacar(valor, id);
+
+                                            Transacao saque = new Transacao(tipoTransacao, valor, data2);
+                                            acoesTrans.registrar(saque, id);
+
+                                            break;
+
+                                        case 3:
+                                            acoesTrans.consultar(id);
+                                            break;
+
+                                        case 4:
+                                            acoesConta.mostrarSaldo(id);
+                                            break;
+
+                                        case 5:
+                                            Produtos produtos = new Produtos();
+
+                                            produtos.mostrarProdutos();
+
+                                            break;
+
+                                        case 6:
+                                            System.out.println("Deseja realmente encerrar sua conta?" +
+                                                    "\n1 - SIM" +
+                                                    "\n2 - NÃO");
+                                            System.out.print("Digite sua opção: ");
+                                            int enc = teclado.nextInt();
+
+                                            if (enc == 1) {
+                                                System.out.print("Digite seu CNPJ: ");
+                                                documento = reader.readLine();
+                                                System.out.print("Digite sua senha: ");
+                                                senha = reader.readLine();
+
+                                                acesso = acoesPF.realizarLogin(documento, senha);
+                                                System.out.println();
+
+                                                if (acesso) {
+                                                    acoesPJ.encerrarConta(id);
+
+                                                    op2 = 0;
+                                                }
+                                            }
+                                            break;
+
+                                        case 11:
+                                            acoesPJ.listarPjuridica();
+
+                                            System.out.println("Deseja realmente excluir esse cliente?" +
+                                                    "\n1 - SIM" +
+                                                    "\n2 - NÃO");
+                                            System.out.print("Digite sua opção: ");
+                                            int exc = teclado.nextInt();
+
+                                            if (exc == 1) {
+                                                System.out.print("Digite seu CNPJ: ");
+                                                documento = reader.readLine();
+                                                System.out.print("Digite sua senha: ");
+                                                senha = reader.readLine();
+
+                                                acesso = acoesPJ.realizarLogin(documento, senha);
+                                                System.out.println();
+
+                                                System.out.print("Digite o ID que deseja excluir: ");
+                                                int id55 = Integer.parseInt(reader.readLine());
+
+                                                acoesTrans.excluirTrans(id55);
+                                                acoesConta.excluirConta(id55);
+                                                acoesPJ.excluirCliente(id55);
+
+                                                System.out.println();
+                                            }
+                                            break;
+
+                                        case 0:
+                                            System.out.println("\nVocê está voltando para tela inicial...\n");
+                                            break;
+
+                                        default:
+                                            System.out.println("\nOpção não permitida. Escolha outra!\n");
+                                    }
+                                } while (op2 != 0);
+                            }
 
                             break;
                     }
@@ -272,18 +403,30 @@ public class Main {
                             break;
 
                         case 2:
-                            System.out.print("\nDigite seu Nome: ");
-                            nome = reader.readLine();
-                            System.out.print("\nDigite seu CNPJ: ");
-                            documento = reader.readLine();
+
+                            //System.out.print("\nDigite seu CNPJ: ");
+                            //documento = reader.readLine();
                             tipoCliente = "cnpj";
-                            System.out.print("\nDigite seu Senha: ");
-                            senha = reader.readLine();
+
 
                             Pjuridica pJuridica = new Pjuridica(nome, senha, documento);
-
-
                             acoesPJ.realizarCadastro(pJuridica, tipoCliente);
+
+                            id = acoesPJ.obterIdCliente(documento);
+                            Conta conta2 = new Conta(pJuridica);
+                            acoesConta.abrirConta(conta2, id);
+
+                            tipoTransacao = "deposito";
+                            System.out.print("Digite o valor a ser depositado: ");
+                            valor = Double.parseDouble(reader.readLine());
+                            LocalDate data2 = LocalDate.now();
+
+                            acoesConta.depositar(valor, id);
+
+                            point = 100.00;
+
+                            Transacao deposito2 = new Transacao(tipoTransacao, valor, data2);
+                            acoesTrans.registrar(deposito2, id);
 
                             break;
 
