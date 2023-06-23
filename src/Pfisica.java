@@ -2,6 +2,10 @@ public class Pfisica extends Cliente {
 	
 	private String cpf;
 
+	public Pfisica(int id) {
+		super(id);
+	}
+
 	public Pfisica(String nome, String senha, String cpf) {
 		super(nome, senha);
 		this.cpf = cpf;

@@ -5,6 +5,10 @@ public class Cliente {
 	private String nome;
 	private String senha;
 	private boolean autenticado = false;
+
+	public Cliente(int id) {
+		this.id = id;
+	}
 	
 	//Contrutor com os "this".
 	public Cliente(String nome, String senha) {

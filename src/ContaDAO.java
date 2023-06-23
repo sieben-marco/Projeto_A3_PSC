@@ -6,14 +6,14 @@ public class ContaDAO {
         this.conexao = new Conexao().criarConexao();
     }
 
-    public void abrirConta(Conta conta) {
+    public void abrirConta(Conta conta, int id) {
 
         try {
             String query = "INSERT INTO conta(saldo, idCliente) VALUES (?,?)";
             PreparedStatement statement = conexao.prepareStatement(query);
 
             statement.setDouble(1, conta.getSaldo());
-            statement.setInt(2, conta.getIdCliente());
+            statement.setInt(2, id/*conta.getIdCliente()*/);
 
             statement.execute();
             statement.close();
@@ -84,15 +84,15 @@ public class ContaDAO {
 
             ResultSet rs = statement.executeQuery();
 
-            System.out.println("-------------------------");
-            System.out.format("ID\t\tSALDO\n");
-            System.out.println("-------------------------");
+            System.out.println("\n-----------------------");
+            System.out.format("ID CONTA\t\tSALDO\n");
+            System.out.println("-----------------------");
 
             while (rs.next()) {
                 int idPK = rs.getInt("idConta");
                 double saldo = rs.getDouble("saldo");
 
-                System.out.format("%d\t\t%.2f\n", idPK, saldo);
+                System.out.format("%d\t\t\t\t%.2f\n\n", idPK, saldo);
             }
 
             rs.close();
@@ -133,5 +133,28 @@ public class ContaDAO {
             System.out.println("SQL state = " + e.getSQLState());
             System.out.println("Message = " + e.getMessage());
         }
+    }
+
+    public boolean excluirConta(int id) {
+
+            try {
+                String query = "DELETE FROM conta WHERE idCliente = ?";
+                PreparedStatement statement = conexao.prepareStatement(query);
+                statement.setInt(1, id);
+
+                int res = statement.executeUpdate();
+
+                if (res > 0) {
+                    return true;
+                }
+
+                statement.close();
+            } catch (SQLException e) {
+                System.out.println("Error Code = " + e.getErrorCode());
+                System.out.println("SQL state = " + e.getSQLState());
+                System.out.println("Message = " + e.getMessage());
+            }
+
+        return false;
     }
 }

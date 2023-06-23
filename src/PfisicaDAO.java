@@ -7,28 +7,33 @@ public class PfisicaDAO {
         this.conexao = new Conexao().criarConexao();
     }
 
-    public void listarPfisica(String id, String nome) {
+    public void listarPfisica() {
         try {
             String query;
             PreparedStatement stmt = null;
-            if (id.equals("TODOS")) {
-                query = "SELECT * FROM cliente WHERE tipocliente = 'cpf'";
+            /*if (id.equals("TODOS")) {*/
+                query = "SELECT * FROM cliente WHERE status = 'inativo'";
                 stmt = conexao.prepareStatement(query);
-            } else if (id.equals("BUSCA")) {
+            /*} else if (id.equals("BUSCA")) {
                 query = "SELECT * FROM cliente WHERE cpf LIKE ?";
                 stmt = conexao.prepareStatement(query);
                 stmt.setString(1, "%" + nome + "%");
 
-            }
+            }*/
             ResultSet rs = stmt.executeQuery();
-            System.out.println("ID\tNOME\t\t\t\t\t\tDOCUMENTO\t\t\t\t\t\t\tPESSOA FISICA\t\t\t\t\t\t\n");
+
+            System.out.println("\n--------------------------------------------------------------------------------");
+            System.out.println("ID CLIENTE\tNOME\t\tDOCUMENTO\t\t\tCLIENTE\t\t\tSTATUS");
+            System.out.println("--------------------------------------------------------------------------------");
+
             while (rs.next()) {
                 int id1 = rs.getInt("idCliente");
                 String nome1 = rs.getNString("nome");
-                String cpf = rs.getNString("documento");
+                String documento = rs.getNString("documento");
                 String tipocliente = rs.getNString("tipoCliente");
+                String status = rs.getNString("status");
 
-                System.out.println("%d\\t%-20s\\t\\t%-30s\\t%-30s\\t%-10s\\n"+id1+nome1+cpf+tipocliente);
+                System.out.format("%d\t\t\t%-10s\t%-10s\t\t%-5s\t\t%-10s\n\n", id1, nome1, documento, tipocliente, status);
             }
             rs.close();
             stmt.close();
@@ -48,7 +53,7 @@ public class PfisicaDAO {
             String query;
             PreparedStatement statement = null;
 
-            query = "SELECT documento, senha FROM cliente WHERE documento = ? and senha = ?";
+            query = "SELECT documento, senha, status FROM cliente WHERE documento = ? and senha = ?";
             statement = conexao.prepareStatement(query);
 
             statement.setString(1, documento);
@@ -59,8 +64,9 @@ public class PfisicaDAO {
             while (rs.next()) {
                 String doc = rs.getString("documento");
                 String acesso = rs.getString("senha");
+                String status = rs.getString("status");
 
-                if (documento.equals(doc) && senha.equals(acesso)) {
+                if (documento.equals(doc) && senha.equals(acesso) && status.equals("ativo")) {
                     return true;
                 }
             }
@@ -74,6 +80,36 @@ public class PfisicaDAO {
         }
 
         return false;
+    }
+
+    public int obterIdCliente(String documento) {
+
+        int id = 0;
+
+        try {
+            String query;
+            PreparedStatement statement = null;
+
+            query = "SELECT idCliente FROM cliente WHERE documento = ?";
+            statement = conexao.prepareStatement(query);
+
+            statement.setString(1, documento);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                id = rs.getInt("idCliente");
+            }
+
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println("Error Code = " + e.getErrorCode());
+            System.out.println("SQL state = " + e.getSQLState());
+            System.out.println("Message = " + e.getMessage());
+        }
+
+        return id;
     }
 
 
@@ -125,23 +161,44 @@ public class PfisicaDAO {
             System.out.println("Message"+e.getMessage());
         }
     }
-    public void excluirCliente(int id){
-        try{
-            String query = "DELETE FROM cliente WHERE id = ?";
-            PreparedStatement stmt = conexao.prepareStatement(query);
 
-            stmt.setInt(1,id);
-            int res = stmt.executeUpdate();
-            if (res>0)
-                System.out.println("Exclusao do cliente feita!");
-            else
-                System.out.println("Esse id de cliente nao existe");
-            stmt.close();
-        }catch (SQLException e){
+    public void encerrarConta(int id) {
 
-            System.out.println("Error Code= "+ e.getErrorCode());
-            System.out.println("SQL state= "+ e.getSQLState());
-            System.out.println("Message= "+ e.getMessage());
+        try {
+            String query = "UPDATE cliente SET status = 'inativo' WHERE idCliente = ?";
+            PreparedStatement statement = conexao.prepareStatement(query);
+            statement.setInt(1, id);
+
+            statement.execute();
+            statement.close();
+
+            System.out.println("Conta Encerrada!");
+
+        } catch (SQLException e) {
+            System.out.println("Error Code = " + e.getErrorCode());
+            System.out.println("SQL state = " + e.getSQLState());
+            System.out.println("Message = " + e.getMessage());
         }
+    }
+    public void excluirCliente(int id){
+
+            try {
+                String query = "DELETE FROM cliente WHERE idCliente = ?";
+                PreparedStatement stmt = conexao.prepareStatement(query);
+
+                stmt.setInt(1, id);
+                int res = stmt.executeUpdate();
+                if (res > 0)
+                    System.out.println("Exclusão da conta concluída!");
+                else
+                    System.out.println("Esse id de cliente nao existe");
+                stmt.close();
+            } catch (SQLException e) {
+
+                System.out.println("Error Code= " + e.getErrorCode());
+                System.out.println("SQL state= " + e.getSQLState());
+                System.out.println("Message= " + e.getMessage());
+            }
+
     }
 }
